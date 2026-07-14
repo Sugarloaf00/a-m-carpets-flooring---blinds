@@ -645,14 +645,15 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Intercept click events globally using Event Delegation (immunity to React Hydration node replacement)
-  document.body.addEventListener("click", function(e) {
+  // Intercept click events in the capturing phase (beats React / Framer event.stopPropagation())
+  document.addEventListener("click", function(e) {
     const quoteLink = e.target.closest('a[href^="mailto:monikavandermerwe5"]');
     if (quoteLink) {
       e.preventDefault();
+      e.stopPropagation();
       openQuoteModal();
     }
-  });
+  }, { capture: true });
 
   // Helper function to update button text to "Get a Free Quote"
   function syncButtonText() {
@@ -706,7 +707,8 @@ document.addEventListener("DOMContentLoaded", function() {
       const encodedText = encodeURIComponent(text);
       const url = `https://wa.me/27798150893?text=${encodedText}`;
       
-      window.open(url, "_blank");
+      // Redirect tab directly to launch WhatsApp (immune to mobile popup blockers)
+      window.location.href = url;
       closeQuoteModal();
     });
   }
@@ -807,6 +809,7 @@ I would like to request a quote. Here are my details:
   });
 });
 </script>
+
 
 
 

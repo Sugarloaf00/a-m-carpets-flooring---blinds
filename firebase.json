@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "amcarpetsflooringandblinds",
     "public": ".",
     "ignore": [
       "firebase.json",

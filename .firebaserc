@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "carpetsflooringandblinds"
-  }
+  },
+  "targets": {
+    "carpetsflooringandblinds": {
+      "hosting": {
+        "amcarpetsflooringandblinds": [
+          "amcarpetsflooringandblinds"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
