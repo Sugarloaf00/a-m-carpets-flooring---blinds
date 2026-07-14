@@ -211,5 +211,75 @@ n.innerHTML='<style>#ncx-local-notice{position:fixed;left:50%;bottom:18px;transf
 +'<button class="ncx-x" type="button" aria-label="Dismiss" onclick="this.parentNode.remove()">✕</button>';
 (document.body||document.documentElement).appendChild(n);
 }catch(e){}})();</script>
-<!-- /NoCodeXport Local Notice --></body>
+<!-- /NoCodeXport Local Notice --><script>
+// Automatic Slideshow for the main service visual image
+document.addEventListener("DOMContentLoaded", function() {
+  const images = [
+    "/assets/images/image-cc9aa8ce.jpg",
+    "/assets/images/flooring_service.png",
+    "/assets/images/blinds_service.png"
+  ];
+  let currentIndex = 0;
+  
+  // Find the container and target image element
+  const container = document.querySelector(".framer-cmu72o");
+  if (!container) return;
+  
+  const img = container.querySelector("img");
+  if (!img) return;
+  
+  // Apply a smooth transition style for the image fade animation
+  img.style.transition = "opacity 0.6s ease-in-out";
+  
+  function setSlide(index) {
+    currentIndex = index;
+    const nextSrc = images[currentIndex];
+    
+    // Fade out transition
+    img.style.opacity = "0";
+    
+    setTimeout(() => {
+      // Set CSS content property (overrides Framer Motion's background updates)
+      img.style.setProperty("content", `url("${nextSrc}")`, "important");
+      // Fallback attributes
+      img.src = nextSrc;
+      img.srcset = "";
+      
+      // Fade in transition
+      img.style.opacity = "1";
+    }, 600);
+  }
+  
+  // Preload all slideshow images to ensure no blank flickers on load
+  images.forEach(src => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = src;
+    document.head.appendChild(link);
+  });
+  
+  // Setup interval to switch slides (every 3 seconds)
+  setInterval(() => {
+    setSlide((currentIndex + 1) % images.length);
+  }, 3000);
+  
+  // MutationObserver to intercept and override React hydration resets
+  const observer = new MutationObserver(() => {
+    const expected = images[currentIndex];
+    const currentContent = img.style.getPropertyValue("content");
+    if (!currentContent.includes(expected)) {
+      img.style.setProperty("content", `url("${expected}")`, "important");
+      img.src = expected;
+      img.srcset = "";
+    }
+  });
+  
+  observer.observe(img, {
+    attributes: true,
+    attributeFilter: ["src", "srcset", "style"]
+  });
+});
+</script>
+</body>
 </html>
