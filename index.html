@@ -471,336 +471,194 @@ n.innerHTML='<style>#ncx-local-notice{position:fixed;left:50%;bottom:18px;transf
 +'<button class="ncx-x" type="button" aria-label="Dismiss" onclick="this.parentNode.remove()">✕</button>';
 (document.body||document.documentElement).appendChild(n);
 }catch(e){}})();</script>
-<!-- /NoCodeXport Local Notice --><!-- Quote Choice Modal Overlay -->
-<div id="quote-modal" class="quote-modal-overlay" style="display: none;">
-  <div class="quote-modal-card">
-    <button class="quote-modal-close" id="quote-modal-close-btn" aria-label="Close modal">✕</button>
-    <h3 class="quote-modal-title">Get a Free Quote</h3>
-    <p class="quote-modal-subtitle">Fill in your details below to send a quote request directly to Monika:</p>
+<!-- /NoCodeXport Local Notice -->
+
+
+
+
+
+
+
+<!-- QUOTE SYSTEM: Self-contained modal + floating button -->
+<div id="am-quote-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(16,18,15,0.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:999999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;width:90%;max-width:420px;padding:28px;box-shadow:0 20px 50px rgba(0,0,0,0.18);position:relative;font-family:Inter,sans-serif;">
+    <button onclick="document.getElementById('am-quote-modal').style.display='none';" style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.05);border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button>
+    <h3 style="font-family:'General Sans',sans-serif;font-size:22px;font-weight:600;color:#10120f;margin:0 0 6px;">Get a Free Quote</h3>
+    <p style="font-size:13px;color:#666;margin:0 0 18px;">Fill in your details and we'll get back to you:</p>
     
-    <form id="quote-query-form" class="quote-query-form" onsubmit="return false;">
-      <div class="form-group">
-        <label for="quote-name">Full Name</label>
-        <input type="text" id="quote-name" required placeholder="e.g. John Doe">
-      </div>
-      
-      <div class="form-group">
-        <label for="quote-phone">Phone Number</label>
-        <input type="tel" id="quote-phone" required placeholder="e.g. 082 123 4567">
-      </div>
-      
-      <div class="form-group">
-        <label for="quote-service">Service Required</label>
-        <select id="quote-service" required>
-          <option value="" disabled selected>Select a service...</option>
-          <option value="Flooring & Installation">Flooring &amp; Installation</option>
-          <option value="Blinds & Shutters">Blinds &amp; Shutters</option>
-          <option value="Carpet & Upholstery Cleaning">Carpet &amp; Upholstery Cleaning</option>
-          <option value="Other / Query">Other / General Query</option>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div><label style="font-size:12px;font-weight:600;color:#10120f;display:block;margin-bottom:4px;">Full Name *</label><input id="am-q-name" type="text" placeholder="e.g. John Doe" style="width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;"></div>
+      <div><label style="font-size:12px;font-weight:600;color:#10120f;display:block;margin-bottom:4px;">Phone Number *</label><input id="am-q-phone" type="tel" placeholder="e.g. 082 123 4567" style="width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;"></div>
+      <div><label style="font-size:12px;font-weight:600;color:#10120f;display:block;margin-bottom:4px;">Service Required *</label>
+        <select id="am-q-service" style="width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;background:#fff;">
+          <option value="">Select a service...</option>
+          <option value="Flooring and Installation">Flooring &amp; Installation</option>
+          <option value="Blinds and Shutters">Blinds &amp; Shutters</option>
+          <option value="Carpet and Upholstery Cleaning">Carpet &amp; Upholstery Cleaning</option>
+          <option value="Other">Other / General Query</option>
         </select>
       </div>
+      <div><label style="font-size:12px;font-weight:600;color:#10120f;display:block;margin-bottom:4px;">Message</label><textarea id="am-q-msg" rows="3" placeholder="Describe what you need..." style="width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;resize:vertical;"></textarea></div>
       
-      <div class="form-group">
-        <label for="quote-message">Message / Details</label>
-        <textarea id="quote-message" rows="3" placeholder="Describe what you need (sizes, area, etc.)..."></textarea>
-      </div>
+      <button onclick="window._amSendWhatsApp()" style="width:100%;padding:12px;border:none;border-radius:10px;background:#25d366;color:#fff;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        Send via WhatsApp
+      </button>
       
-      <div class="form-actions">
-        <button type="button" id="submit-whatsapp-btn" class="form-submit-btn whatsapp-submit">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-          Send via WhatsApp (Free)
-        </button>
-        
-        <button type="button" id="submit-email-btn" class="form-submit-btn email-submit">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          Send via Email
-        </button>
-      </div>
-    </form>
-    
-    <div class="quote-modal-footer">
-      Or call us directly: <a href="tel:+27798150893" class="footer-call-link">079 815 0893</a>
+      <button onclick="window._amSendEmail()" style="width:100%;padding:12px;border:none;border-radius:10px;background:#10120f;color:#fff;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        Send via Email
+      </button>
     </div>
+    
+    <p style="font-size:11px;color:#888;text-align:center;margin:16px 0 0;border-top:1px solid #eee;padding-top:12px;">Or call us directly: <a href="tel:+27798150893" style="color:#09335f;font-weight:600;">079 815 0893</a></p>
   </div>
 </div>
 
+<!-- Floating CTA Button (always visible, bottom-right) -->
+<div id="am-float-btn" onclick="window._amOpenQuote()" style="position:fixed;bottom:24px;right:24px;z-index:99999;background:#10120f;color:#fff;padding:14px 24px;border-radius:50px;cursor:pointer;font-family:'General Sans',sans-serif;font-size:14px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,0.2);display:flex;align-items:center;gap:8px;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(0,0,0,0.25)';" onmouseout="this.style.transform='';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.2)';">
+  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  Get a Free Quote
+</div>
+
 <script>
-// Automatic Slideshow and Quote Choice Modal Event Handlers
-document.addEventListener("DOMContentLoaded", function() {
-  // ==========================================
-  // DUAL SLIDESHOW CAROUSELS
-  // ==========================================
-  const images = [
-    "/assets/images/image-cc9aa8ce.jpg",
-    "/assets/images/flooring_service.png",
-    "/assets/images/blinds_service.png"
-  ];
-  let currentIndex = 0;
+// === SELF-CONTAINED QUOTE SYSTEM ===
+(function() {
+  // Open modal
+  window._amOpenQuote = function() {
+    var m = document.getElementById('am-quote-modal');
+    if (m) m.style.display = 'flex';
+  };
   
-  const images2 = [
-    "/assets/images/image-bab72cba.jpeg",
-    "/assets/images/flooring_work.png",
-    "/assets/images/blinds_work.png"
-  ];
-  let currentIndex2 = 0;
+  // Close modal on backdrop click
+  var modal = document.getElementById('am-quote-modal');
+  if (modal) {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  }
+  
+  // Validate form
+  function getAndValidate() {
+    var name = document.getElementById('am-q-name').value.trim();
+    var phone = document.getElementById('am-q-phone').value.trim();
+    var service = document.getElementById('am-q-service').value;
+    var msg = document.getElementById('am-q-msg').value.trim();
+    if (!name || !phone || !service) {
+      alert('Please fill in Name, Phone, and Service.');
+      return null;
+    }
+    return {name: name, phone: phone, service: service, msg: msg || 'No additional details.'};
+  }
+  
+  // Send via WhatsApp
+  window._amSendWhatsApp = function() {
+    var d = getAndValidate();
+    if (!d) return;
+    var text = 'Hi Monika! I would like to request a quote.\n\n' +
+      'Name: ' + d.name + '\n' +
+      'Phone: ' + d.phone + '\n' +
+      'Service: ' + d.service + '\n' +
+      'Message: ' + d.msg;
+    window.location.href = 'https://wa.me/27798150893?text=' + encodeURIComponent(text);
+  };
+  
+  // Send via Email
+  window._amSendEmail = function() {
+    var d = getAndValidate();
+    if (!d) return;
+    var subject = 'Free Quote Request - ' + d.name;
+    var body = 'Hi Monika,\n\nI would like to request a quote.\n\n' +
+      'Name: ' + d.name + '\n' +
+      'Phone: ' + d.phone + '\n' +
+      'Service: ' + d.service + '\n' +
+      'Message: ' + d.msg;
+    window.location.href = 'mailto:monikavandermerwe5@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  };
+  
+  // === AGGRESSIVE DOM HIJACKING ===
+  // Every 500ms, find ALL Framer quote buttons and replace their onclick behavior
+  setInterval(function() {
+    // Find all anchor elements that Framer created for quotes
+    var allLinks = document.querySelectorAll('a[data-framer-name*="Quote"], a[data-framer-name*="quote"], a[href*="quote"], a[href*="mailto:monika"]');
+    for (var i = 0; i < allLinks.length; i++) {
+      var link = allLinks[i];
+      // Override the href to prevent any native navigation
+      if (link.getAttribute('href') !== 'javascript:void(0)') {
+        link.setAttribute('href', 'javascript:void(0)');
+      }
+      // Remove target blank
+      if (link.hasAttribute('target')) {
+        link.removeAttribute('target');
+      }
+      // Set onclick property directly (overrides React's synthetic events)
+      link.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window._amOpenQuote();
+        return false;
+      };
+    }
+    
+    // Also handle the "Email for a quote" button
+    var allAnchors = document.querySelectorAll('a[data-framer-name="Email Monika"]');
+    for (var j = 0; j < allAnchors.length; j++) {
+      var a = allAnchors[j];
+      if (a.getAttribute('href') !== 'javascript:void(0)') {
+        a.setAttribute('href', 'javascript:void(0)');
+      }
+      if (a.hasAttribute('target')) a.removeAttribute('target');
+      a.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window._amOpenQuote();
+        return false;
+      };
+    }
+  }, 500);
+  
+  // === SLIDESHOW CAROUSELS ===
+  var images = ['/assets/images/image-cc9aa8ce.jpg', '/assets/images/flooring_service.png', '/assets/images/blinds_service.png'];
+  var idx1 = 0;
+  var images2 = ['/assets/images/image-bab72cba.jpeg', '/assets/images/flooring_work.png', '/assets/images/blinds_work.png'];
+  var idx2 = 0;
   
   document.documentElement.style.setProperty('--carousel-image', 'url("' + images[0] + '")');
   document.documentElement.style.setProperty('--carousel-image-2', 'url("' + images2[0] + '")');
   
-  function setSlide(index) {
-    currentIndex = index;
-    var nextSrc = images[currentIndex];
-    var container = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
-    if (container) {
-      var img = container.querySelector("img");
-      if (img) { img.style.opacity = "0"; }
-    }
-    setTimeout(function() {
-      document.documentElement.style.setProperty('--carousel-image', 'url("' + nextSrc + '")');
-      var container = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
-      if (container) {
-        var img = container.querySelector("img");
-        if (img) { img.src = nextSrc; img.srcset = ""; img.style.opacity = "1"; }
-      }
-    }, 600);
+  function slide1() {
+    idx1 = (idx1 + 1) % images.length;
+    var src = images[idx1];
+    document.documentElement.style.setProperty('--carousel-image', 'url("' + src + '")');
+    var c = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector('.framer-cmu72o');
+    if (c) { var img = c.querySelector('img'); if (img) { img.src = src; img.srcset = ''; } }
+  }
+  function slide2() {
+    idx2 = (idx2 + 1) % images2.length;
+    var src = images2[idx2];
+    document.documentElement.style.setProperty('--carousel-image-2', 'url("' + src + '")');
+    var c = document.querySelector('[data-framer-name="A & M Service Flyer"]') || document.querySelector('.framer-1omxr96');
+    if (c) { var img = c.querySelector('img'); if (img) { img.src = src; img.srcset = ''; } }
   }
   
-  function setSlide2(index) {
-    currentIndex2 = index;
-    var nextSrc = images2[currentIndex2];
-    var container = document.querySelector('[data-framer-name="A & M Service Flyer"]') || document.querySelector(".framer-1omxr96");
-    if (container) {
-      var img = container.querySelector("img");
-      if (img) { img.style.opacity = "0"; }
-    }
-    setTimeout(function() {
-      document.documentElement.style.setProperty('--carousel-image-2', 'url("' + nextSrc + '")');
-      var container = document.querySelector('[data-framer-name="A & M Service Flyer"]') || document.querySelector(".framer-1omxr96");
-      if (container) {
-        var img = container.querySelector("img");
-        if (img) { img.src = nextSrc; img.srcset = ""; img.style.opacity = "1"; }
-      }
-    }, 600);
-  }
+  setInterval(slide1, 3000);
+  setTimeout(function() { slide2(); setInterval(slide2, 3000); }, 1500);
   
-  var allImages = images.concat(images2);
-  allImages.forEach(function(src) {
-    var link = document.createElement("link");
-    link.rel = "preload";
-    link.as = "image";
-    link.href = src;
-    document.head.appendChild(link);
+  // Preload
+  images.concat(images2).forEach(function(s) {
+    var l = document.createElement('link'); l.rel = 'preload'; l.as = 'image'; l.href = s;
+    document.head.appendChild(l);
   });
   
-  setInterval(function() { setSlide((currentIndex + 1) % images.length); }, 3000);
-  setTimeout(function() {
-    setSlide2((currentIndex2 + 1) % images2.length);
-    setInterval(function() { setSlide2((currentIndex2 + 1) % images2.length); }, 3000);
-  }, 1500);
-
-  // ==========================================
-  // GET A FREE QUOTE MODAL SYSTEM
-  // ==========================================
-  var modal = document.getElementById("quote-modal");
-  var closeBtn = document.getElementById("quote-modal-close-btn");
-  
-  function openQuoteModal() {
-    if (!modal) return;
-    modal.style.display = "flex";
-    setTimeout(function() { modal.classList.add("active"); }, 10);
-  }
-  
-  function closeQuoteModal() {
-    if (!modal) return;
-    modal.classList.remove("active");
-    setTimeout(function() { modal.style.display = "none"; }, 300);
-  }
-  
-  if (closeBtn) { closeBtn.addEventListener("click", closeQuoteModal); }
-  if (modal) {
-    modal.addEventListener("click", function(e) {
-      if (e.target === modal) { closeQuoteModal(); }
-    });
-  }
-
-  // BULLETPROOF click interception: capturing phase on document
-  // Matches BOTH the neutralized #quote links AND any mailto links React may restore
-  document.addEventListener("click", function(e) {
-    var link = e.target.closest('a[data-quote-action]') ||
-               e.target.closest('a[href="#quote"]') ||
-               e.target.closest('a[href^="mailto:monikavandermerwe5"]');
-    if (link) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      openQuoteModal();
-      return false;
+  // === BRAND SUBTITLE ===
+  setInterval(function() {
+    var c = document.querySelector('.framer-c2gtt9');
+    if (c && !c.querySelector('.brand-title-row')) {
+      c.innerHTML = '<div style="display:flex;flex-direction:column;gap:1px;"><div class="brand-title-row" style="font-family:General Sans,sans-serif;font-size:18px;font-weight:600;color:#10120f;line-height:1.1em;">A &amp; M</div><div style="font-family:Inter,sans-serif;font-size:10px;font-weight:500;color:#6a6d65;text-transform:uppercase;letter-spacing:0.05em;line-height:1em;">carpets flooring and blinds</div></div>';
     }
-  }, true);
-
-  // Also intercept mousedown to prevent any native behavior before click fires
-  document.addEventListener("mousedown", function(e) {
-    var link = e.target.closest('a[data-quote-action]') ||
-               e.target.closest('a[href="#quote"]') ||
-               e.target.closest('a[href^="mailto:monikavandermerwe5"]');
-    if (link) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-    }
-  }, true);
-
-  // Neutralize mailto links: strip href and target to prevent native navigation
-  function neutralizeMailtoLinks() {
-    var links = document.querySelectorAll('a[href^="mailto:monikavandermerwe5"]');
-    links.forEach(function(link) {
-      link.setAttribute("href", "#quote");
-      link.setAttribute("data-quote-action", "true");
-      link.removeAttribute("target");
-      link.removeAttribute("rel");
-    });
-  }
-
-  // Update button text
-  function syncButtonText() {
-    var quoteLinks = document.querySelectorAll('a[data-quote-action], a[href="#quote"], a[href^="mailto:monikavandermerwe5"]');
-    quoteLinks.forEach(function(link) {
-      var textEl = link.querySelector('.framer-text') || link.querySelector('p') || link;
-      if (textEl) {
-        var text = textEl.textContent.trim();
-        if (text !== "Quote" && text !== "Get a Free Quote") {
-          textEl.textContent = "Get a Free Quote";
-        }
-      }
-    });
-  }
-
-  // ==========================================
-  // SUBMIT FORM
-  // ==========================================
-  var wsBtn = document.getElementById("submit-whatsapp-btn");
-  var emailBtn = document.getElementById("submit-email-btn");
-  
-  function getFormData() {
-    return {
-      name: document.getElementById("quote-name").value.trim(),
-      phone: document.getElementById("quote-phone").value.trim(),
-      service: document.getElementById("quote-service").value,
-      message: document.getElementById("quote-message").value.trim()
-    };
-  }
-  
-  function validateForm(data) {
-    if (!data.name || !data.phone || !data.service) {
-      alert("Please fill in all required fields (Name, Phone, and Service).");
-      return false;
-    }
-    return true;
-  }
-  
-  if (wsBtn) {
-    wsBtn.addEventListener("click", function() {
-      var data = getFormData();
-      if (!validateForm(data)) return;
-      var text = "Hi Monika! I would like to request a quote.
-
-" +
-        "Name: " + data.name + "
-" +
-        "Phone: " + data.phone + "
-" +
-        "Service: " + data.service + "
-" +
-        "Message: " + (data.message || "No additional details.");
-      var url = "https://wa.me/27798150893?text=" + encodeURIComponent(text);
-      window.location.href = url;
-      closeQuoteModal();
-    });
-  }
-  
-  if (emailBtn) {
-    emailBtn.addEventListener("click", function() {
-      var data = getFormData();
-      if (!validateForm(data)) return;
-      var subject = "Free Quote Request - " + data.name;
-      var body = "Hi Monika,
-
-I would like to request a quote.
-
-" +
-        "Name: " + data.name + "
-" +
-        "Phone: " + data.phone + "
-" +
-        "Service: " + data.service + "
-" +
-        "Message: " + (data.message || "No additional details.");
-      var mailtoUrl = "mailto:monikavandermerwe5@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-      window.location.href = mailtoUrl;
-      closeQuoteModal();
-    });
-  }
-
-  // ==========================================
-  // LOGO SUBTITLE
-  // ==========================================
-  function syncBrandLogoText() {
-    var container = document.querySelector(".framer-c2gtt9");
-    if (container && !container.querySelector(".brand-title-row")) {
-      container.innerHTML = '<div class="brand-text-container"><div class="brand-title-row">A &amp; M</div><div class="brand-subtitle-row">carpets flooring and blinds</div></div>';
-    }
-  }
-
-  // Initial sync
-  neutralizeMailtoLinks();
-  syncButtonText();
-  syncBrandLogoText();
-
-  // ==========================================
-  // MUTATION OBSERVER
-  // ==========================================
-  var observer = new MutationObserver(function() {
-    // Re-neutralize any mailto links React may have restored
-    neutralizeMailtoLinks();
-    syncButtonText();
-    syncBrandLogoText();
-
-    // Sync slide 1
-    var expected1 = images[currentIndex];
-    var c1 = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
-    if (c1) {
-      var img1 = c1.querySelector("img");
-      if (img1) {
-        img1.style.transition = "opacity 0.6s ease-in-out";
-        var full1 = window.location.origin + expected1;
-        if (img1.src !== expected1 && img1.src !== full1) { img1.src = expected1; img1.srcset = ""; }
-      }
-    }
-    // Sync slide 2
-    var expected2 = images2[currentIndex2];
-    var c2 = document.querySelector('[data-framer-name="A & M Service Flyer"]') || document.querySelector(".framer-1omxr96");
-    if (c2) {
-      var img2 = c2.querySelector("img");
-      if (img2) {
-        img2.style.transition = "opacity 0.6s ease-in-out";
-        var full2 = window.location.origin + expected2;
-        if (img2.src !== expected2 && img2.src !== full2) { img2.src = expected2; img2.srcset = ""; }
-      }
-    }
-  });
-  
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["src", "srcset", "class", "href"]
-  });
-});
+  }, 1000);
+})();
 </script>
-
-
-
-
-
-
 
 </body>
 </html>
