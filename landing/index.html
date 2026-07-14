@@ -168,6 +168,16 @@
     font-size: 15px !important;
   }
 }
+
+/* Carousel Image Variable Injection */
+:root {
+  --carousel-image: url("/assets/images/image-cc9aa8ce.jpg");
+}
+[data-framer-name="Carpet Cleaning"] img,
+.framer-cmu72o img {
+  content: var(--carousel-image) !important;
+  transition: opacity 0.6s ease-in-out !important;
+}
 </style>
 
 
@@ -221,36 +231,40 @@ document.addEventListener("DOMContentLoaded", function() {
   ];
   let currentIndex = 0;
   
-  // Find the container and target image element
-  const container = document.querySelector(".framer-cmu72o");
-  if (!container) return;
-  
-  const img = container.querySelector("img");
-  if (!img) return;
-  
-  // Apply a smooth transition style for the image fade animation
-  img.style.transition = "opacity 0.6s ease-in-out";
+  // Set initial CSS variable
+  document.documentElement.style.setProperty('--carousel-image', `url("${images[0]}")`);
   
   function setSlide(index) {
     currentIndex = index;
     const nextSrc = images[currentIndex];
     
-    // Fade out transition
-    img.style.opacity = "0";
+    // Find the current active image in the DOM
+    const container = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
+    if (container) {
+      const img = container.querySelector("img");
+      if (img) {
+        img.style.opacity = "0";
+      }
+    }
     
     setTimeout(() => {
-      // Set CSS content property (overrides Framer Motion's background updates)
-      img.style.setProperty("content", `url("${nextSrc}")`, "important");
-      // Fallback attributes
-      img.src = nextSrc;
-      img.srcset = "";
+      // Update global CSS variable
+      document.documentElement.style.setProperty('--carousel-image', `url("${nextSrc}")`);
       
-      // Fade in transition
-      img.style.opacity = "1";
+      // Update HTML attributes as fallback
+      const container = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
+      if (container) {
+        const img = container.querySelector("img");
+        if (img) {
+          img.src = nextSrc;
+          img.srcset = "";
+          img.style.opacity = "1";
+        }
+      }
     }, 600);
   }
   
-  // Preload all slideshow images to ensure no blank flickers on load
+  // Preload all slideshow images
   images.forEach(src => {
     const link = document.createElement("link");
     link.rel = "preload";
@@ -264,22 +278,35 @@ document.addEventListener("DOMContentLoaded", function() {
     setSlide((currentIndex + 1) % images.length);
   }, 3000);
   
-  // MutationObserver to intercept and override React hydration resets
+  // MutationObserver to intercept React hydration resets and DOM node swapping
   const observer = new MutationObserver(() => {
     const expected = images[currentIndex];
-    const currentContent = img.style.getPropertyValue("content");
-    if (!currentContent.includes(expected)) {
-      img.style.setProperty("content", `url("${expected}")`, "important");
-      img.src = expected;
-      img.srcset = "";
+    const container = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
+    if (container) {
+      const img = container.querySelector("img");
+      if (img) {
+        // Ensure correct opacity and transition styles are maintained
+        if (img.style.transition !== "opacity 0.6s ease-in-out") {
+          img.style.transition = "opacity 0.6s ease-in-out";
+        }
+        // Force matching attributes
+        const expectedFullUrl = window.location.origin + expected;
+        if (img.src !== expected && img.src !== expectedFullUrl) {
+          img.src = expected;
+          img.srcset = "";
+        }
+      }
     }
   });
   
-  observer.observe(img, {
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
     attributes: true,
-    attributeFilter: ["src", "srcset", "style"]
+    attributeFilter: ["src", "srcset"]
   });
 });
 </script>
+
 </body>
 </html>
