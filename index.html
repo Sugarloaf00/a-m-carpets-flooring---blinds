@@ -172,10 +172,16 @@
 /* Carousel Image Variable Injection */
 :root {
   --carousel-image: url("/assets/images/image-cc9aa8ce.jpg");
+  --carousel-image-2: url("/assets/images/image-bab72cba.jpeg");
 }
 [data-framer-name="Carpet Cleaning"] img,
 .framer-cmu72o img {
   content: var(--carousel-image) !important;
+  transition: opacity 0.6s ease-in-out !important;
+}
+[data-framer-name="A & M Service Flyer"] img,
+.framer-1omxr96 img {
+  content: var(--carousel-image-2) !important;
   transition: opacity 0.6s ease-in-out !important;
 }
 </style>
@@ -222,7 +228,7 @@ n.innerHTML='<style>#ncx-local-notice{position:fixed;left:50%;bottom:18px;transf
 (document.body||document.documentElement).appendChild(n);
 }catch(e){}})();</script>
 <!-- /NoCodeXport Local Notice --><script>
-// Automatic Slideshow for the main service visual image
+// Automatic Slideshow for the main service visual image and flyer image
 document.addEventListener("DOMContentLoaded", function() {
   const images = [
     "/assets/images/image-cc9aa8ce.jpg",
@@ -231,14 +237,21 @@ document.addEventListener("DOMContentLoaded", function() {
   ];
   let currentIndex = 0;
   
-  // Set initial CSS variable
+  const images2 = [
+    "/assets/images/image-bab72cba.jpeg",
+    "/assets/images/flooring_work.png",
+    "/assets/images/blinds_work.png"
+  ];
+  let currentIndex2 = 0;
+  
+  // Set initial CSS variables
   document.documentElement.style.setProperty('--carousel-image', `url("${images[0]}")`);
+  document.documentElement.style.setProperty('--carousel-image-2', `url("${images2[0]}")`);
   
   function setSlide(index) {
     currentIndex = index;
     const nextSrc = images[currentIndex];
     
-    // Find the current active image in the DOM
     const container = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
     if (container) {
       const img = container.querySelector("img");
@@ -248,10 +261,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     setTimeout(() => {
-      // Update global CSS variable
       document.documentElement.style.setProperty('--carousel-image', `url("${nextSrc}")`);
-      
-      // Update HTML attributes as fallback
       const container = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
       if (container) {
         const img = container.querySelector("img");
@@ -264,8 +274,35 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 600);
   }
   
+  function setSlide2(index) {
+    currentIndex2 = index;
+    const nextSrc = images2[currentIndex2];
+    
+    const container = document.querySelector('[data-framer-name="A & M Service Flyer"]') || document.querySelector(".framer-1omxr96");
+    if (container) {
+      const img = container.querySelector("img");
+      if (img) {
+        img.style.opacity = "0";
+      }
+    }
+    
+    setTimeout(() => {
+      document.documentElement.style.setProperty('--carousel-image-2', `url("${nextSrc}")`);
+      const container = document.querySelector('[data-framer-name="A & M Service Flyer"]') || document.querySelector(".framer-1omxr96");
+      if (container) {
+        const img = container.querySelector("img");
+        if (img) {
+          img.src = nextSrc;
+          img.srcset = "";
+          img.style.opacity = "1";
+        }
+      }
+    }, 600);
+  }
+  
   // Preload all slideshow images
-  images.forEach(src => {
+  const allImages = [...images, ...images2];
+  allImages.forEach(src => {
     const link = document.createElement("link");
     link.rel = "preload";
     link.as = "image";
@@ -273,26 +310,50 @@ document.addEventListener("DOMContentLoaded", function() {
     document.head.appendChild(link);
   });
   
-  // Setup interval to switch slides (every 3 seconds)
+  // Setup interval to switch slide 1 (every 3 seconds)
   setInterval(() => {
     setSlide((currentIndex + 1) % images.length);
   }, 3000);
   
+  // Setup staggered interval to switch slide 2 (every 3 seconds, delayed by 1.5s)
+  setTimeout(() => {
+    setSlide2((currentIndex2 + 1) % images2.length);
+    setInterval(() => {
+      setSlide2((currentIndex2 + 1) % images2.length);
+    }, 3000);
+  }, 1500);
+  
   // MutationObserver to intercept React hydration resets and DOM node swapping
   const observer = new MutationObserver(() => {
-    const expected = images[currentIndex];
-    const container = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
-    if (container) {
-      const img = container.querySelector("img");
+    // Sync slide 1
+    const expected1 = images[currentIndex];
+    const container1 = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
+    if (container1) {
+      const img = container1.querySelector("img");
       if (img) {
-        // Ensure correct opacity and transition styles are maintained
         if (img.style.transition !== "opacity 0.6s ease-in-out") {
           img.style.transition = "opacity 0.6s ease-in-out";
         }
-        // Force matching attributes
-        const expectedFullUrl = window.location.origin + expected;
-        if (img.src !== expected && img.src !== expectedFullUrl) {
-          img.src = expected;
+        const expectedFullUrl = window.location.origin + expected1;
+        if (img.src !== expected1 && img.src !== expectedFullUrl) {
+          img.src = expected1;
+          img.srcset = "";
+        }
+      }
+    }
+    
+    // Sync slide 2
+    const expected2 = images2[currentIndex2];
+    const container2 = document.querySelector('[data-framer-name="A & M Service Flyer"]') || document.querySelector(".framer-1omxr96");
+    if (container2) {
+      const img = container2.querySelector("img");
+      if (img) {
+        if (img.style.transition !== "opacity 0.6s ease-in-out") {
+          img.style.transition = "opacity 0.6s ease-in-out";
+        }
+        const expectedFullUrl = window.location.origin + expected2;
+        if (img.src !== expected2 && img.src !== expectedFullUrl) {
+          img.src = expected2;
           img.srcset = "";
         }
       }
@@ -307,6 +368,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+
 
 </body>
 </html>
