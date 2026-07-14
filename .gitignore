@@ -1,0 +1,13 @@
+# Temporary backup files
+*.bak
+
+# Firebase cache and logs
+.firebase/
+firebase-debug.log
+
+# Node modules
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db

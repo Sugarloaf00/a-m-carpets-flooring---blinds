@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <style>
+    .black-shape { 
+      fill: none; 
+      stroke: #000000; 
+      stroke-width: 12; 
+      stroke-linejoin: miter; 
+      stroke-miterlimit: 4; 
+    }
+    .green-shape { 
+      fill: none; 
+      stroke: #2ebd59; 
+      stroke-width: 10; 
+      stroke-linejoin: miter; 
+      stroke-linecap: butt; 
+    }
+    .blue-line { 
+      fill: none; 
+      stroke: #0e4a99; 
+      stroke-width: 8; 
+      stroke-linecap: butt; 
+    }
+  </style>
+
+  <g class="blue-line">
+    <line x1="20" y1="80" x2="110" y2="170" />
+    <line x1="50" y1="70" x2="130" y2="150" />
+    <line x1="80" y1="60" x2="150" y2="130" />
+    <line x1="110" y1="50" x2="170" y2="110" />
+  </g>
+
+  <g>
+    <polygon class="black-shape" points="150,50 250,150 150,250 50,150" />
+    <polygon class="black-shape" points="150,150 250,250 150,350 50,250" />
+  </g>
+
+  <polyline class="green-shape" points="160,40 320,200 160,360" />
+
+</svg>
