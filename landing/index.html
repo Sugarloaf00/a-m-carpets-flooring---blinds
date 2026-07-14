@@ -150,22 +150,50 @@
   background-color: rgba(16, 18, 15, 0.05) !important;
 }
 
-/* Responsive Brand Text spans */
-.brand-long {
-  display: inline !important;
+/* Brand Text Container layout overrides */
+.framer-c2gtt9 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  height: auto !important;
+  width: auto !important;
+  white-space: nowrap !important;
 }
-.brand-short {
-  display: none !important;
+
+.brand-text-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 1px !important;
 }
-@media (max-width: 600px) {
-  .brand-long {
-    display: none !important;
+
+.brand-title-row {
+  font-family: "General Sans", sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #10120f !important;
+  line-height: 1.1em !important;
+}
+
+.brand-subtitle-row {
+  font-family: Inter, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  color: #6a6d65 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1em !important;
+}
+
+@media (max-width: 809.98px) {
+  .brand-title-row {
+    font-size: 16px !important;
   }
-  .brand-short {
-    display: inline !important;
-  }
-  .framer-c2gtt9 p {
-    font-size: 15px !important;
+  .brand-subtitle-row {
+    font-size: 9px !important;
   }
 }
 
@@ -339,6 +367,7 @@
   margin-top: 2px !important;
 }
 </style>
+
 
 
 
@@ -576,7 +605,6 @@ document.addEventListener("DOMContentLoaded", function() {
       const textEl = link.querySelector('.framer-text') || link.querySelector('p') || link;
       if (textEl) {
         const text = textEl.textContent.trim();
-        // Keep mobile "Quote" button label short to avoid layout breakage, but update desktop labels
         if (text !== "Quote" && text !== "Get a Free Quote") {
           textEl.textContent = "Get a Free Quote";
         }
@@ -584,8 +612,26 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Sync text initially
+  // ==========================================
+  // LOGO SUBTITLE SYSTEM (A&M -> carpets flooring and blinds)
+  // ==========================================
+  function syncBrandLogoText() {
+    const container = document.querySelector(".framer-c2gtt9");
+    if (container) {
+      if (!container.querySelector(".brand-title-row")) {
+        container.innerHTML = `
+          <div class="brand-text-container">
+            <div class="brand-title-row">A &amp; M</div>
+            <div class="brand-subtitle-row">carpets flooring and blinds</div>
+          </div>
+        `;
+      }
+    }
+  }
+
+  // Sync initially
   syncButtonText();
+  syncBrandLogoText();
 
   // ==========================================
   // GLOBAL MUTATION OBSERVER
@@ -594,7 +640,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // 1. Sync button text when React hydration adds/modifies elements
     syncButtonText();
 
-    // 2. Sync slide 1 attributes
+    // 2. Sync brand logo name & subtitle
+    syncBrandLogoText();
+
+    // 3. Sync slide 1 attributes
     const expected1 = images[currentIndex];
     const container1 = document.querySelector('[data-framer-name="Carpet Cleaning"]') || document.querySelector(".framer-cmu72o");
     if (container1) {
@@ -611,7 +660,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
     
-    // 3. Sync slide 2 attributes
+    // 4. Sync slide 2 attributes
     const expected2 = images2[currentIndex2];
     const container2 = document.querySelector('[data-framer-name="A & M Service Flyer"]') || document.querySelector(".framer-1omxr96");
     if (container2) {
@@ -637,6 +686,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+
 
 
 
